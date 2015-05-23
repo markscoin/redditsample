@@ -1,0 +1,43 @@
+// Place all the styles related to the home controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+@import 'bootstrap-sprockets';
+@import 'bootstrap';
+@font-face {
+  font-family: 'evo';
+  src:font-url('Exo-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+// Variables for theme
+$primary-color: #00b6ff;
+$secondary-color: #3dc4fd;
+
+
+body {
+  font-family: evo, sans-serif, arial;
+  font-size: 10px;
+}
+
+.navbar-default {
+  background-color: $primary-color;
+  border: none;
+  .navbar-brand {
+    color: #fff;
+    font-size: 2.2em;
+  }
+  .search  {
+    &:-moz-placeholder, &:-ms-input-placeholder,&::-moz-placeholder  { /* Firefox 18-, Internet Explorer 10+ , Firefox 19+ */
+      color: $secondary-color;
+    }
+    &::-webkit-input-placeholder{ /* Chrome */
+      color: $secondary-color;
+      opacity: 1 !important; 
+    }
+   
+    width: 100px;
+    border-radius: 20px;
+    color: $secondary-color;
+  }
+}
