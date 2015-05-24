@@ -3,6 +3,7 @@
  */
 
 $(function() {
+    
   // header search bar animation
   var search = $('.search');
   search.focus(function() {
@@ -14,17 +15,85 @@ $(function() {
   $(document).ready(function() {
     articles('funny');
   });
-
+    
+    
+  // search on each keystroke once the search is 3 letters long
+  var delay = (function(){
+    var timer = 0;
+    return function(callback, ms){
+      clearTimeout (timer);
+      timer = setTimeout(callback, ms);
+    };
+  })();
   search.on('keyup',function() {
     var lookup = $(this).val(),
         list = $('#articles');
-      if (lookup.length > 2) {
-          list.empty();
-          articles(lookup)
-      }
+      delay(function(){
+          if (lookup.length > 2) {
+              list.empty();
+              articles(lookup)
+          } 
+      },200);
+  });
+  //overlay functions
+  $('body').delegate('.article','click',function() {
+     $('.overlay').fadeIn(300);
+     $('#overlay-actions').fadeIn(300);
+      var username = $(this).children('.username').text(),
+          article = $('#selected-article'),
+          thumbnail = $(this).children('.thumbnail').attr('src'),
+          title = $(this).children('.title').text(),
+          ups = $(this).children('.num-ups').text(),
+          comments = $(this).children('.num-comments').text(),
+          permalink = $(this).attr('data-link');
+     article.empty();
+     article.append('<img src="' + thumbnail + '" class="thumbnail" + data-link="'+ permalink + '" />' + '<h2>' + username + '</h2>' + '<p>' + title + '</p>' + '<span><div class="comments"></div>' + comments + '</span><span><div class="ups"></div>' + ups + '</span>'); 
   });
 
-  //function to collect Reddit articles
+  $('#overlay-actions, .overlay').on('click',function(){
+     $('.overlay').fadeOut(300);
+     $('#overlay-actions').fadeOut(300);
+     $('#selected-article').data('originalPosition');
+  });
+    
+  $(".actions , #selected-article").click(function(event){
+    event.stopPropagation();
+  });
+
+  //drag and drop function during overlay
+  $('#selected-article').draggable({
+      revert: function(valid) {
+          if(!valid) {
+              $(this).animate({opacity: 1}, 'fast').animate(this.originalPosition);
+              return true;
+          }
+          return true;
+      },
+      drag: function(event, ui) {
+          ui.helper.css('opacity', 0.5);
+      },
+      stop: function(event,ui) {
+          ui.helper.css('opacity', 1);
+      }
+  });
+  $('#reddit').droppable({
+      accept: '#selected-article',
+      hoverClass: 'box-shadow',
+      drop: function(event, ui){
+        var link = $('#selected-article').children('img').attr('data-link');
+        window.open('http://reddit.com' + link);
+      }
+  });
+  $('#mail').droppable({
+      accept: '#selected-article',
+      hoverClass: 'box-shadow',
+      drop: function() {
+          var link = $('#selected-article').children('img').attr('data-link')
+          window.location='mailto:?to=dummyaccount@example.com&subject=Check out this Reddit post&body=http://www.reddit.com' + link;
+      }
+  });
+    
+    //function to collect Reddit articles
   function articles(request) {
     var loader = $('#loader');
     loader.append('<img src="' + '<%= asset_path('loader.gif') %>"' +"/>"); 
@@ -41,8 +110,9 @@ $(function() {
                         num_comments = i.data.num_comments,
                         ups = i.data.ups,
                         sprite = '<%= asset_path('icon-sprite.png') %>',
-                        downs = i.data.downs;
-                list.append('<li>' + '<img src="'+thumbnail+'" class="thumbnail" />' + '<p class="username">' + author + "</p>" + '<p class="title">' + title + '</p>' + "<span>" + '<div  class="comments"></div>' + num_comments + ' comments'+ '</span> <span>'+ '<div class="ups"></div>' + ups + ' ups' + '</span> <span>' + '<div class="downs" ></div>' +downs + ' downs' + '</span>' + '</li>');
+                        downs = i.data.downs,
+                        permalink = i.data.permalink;
+                list.append("<li class='article' data-link='"+ permalink + "'>" + '<img src="'+thumbnail+'" class="thumbnail" />' + '<p class="username">' + author + "</p>" + '<p class="title">' + title + '</p>' + "<span class='num-comments'>" + '<div  class="comments"></div>' + num_comments + ' comments'+ '</span> <span class="num-ups">'+ '<div class="ups"></div>' + ups + ' ups' + '</span> <span>' + '<div class="downs" ></div>' +downs + ' downs' + '</span>' + '</li>');
             });
         },
         error: function(fail) {
@@ -51,6 +121,7 @@ $(function() {
         }
     }); 
   }
+    
 });
 
 

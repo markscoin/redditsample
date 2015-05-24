@@ -1,3 +1,28 @@
+<div class="overlay"></div>
+
+<div class="container" id="overlay-actions">
+  <div class="col-xs-5">
+    <div id="selected-article">
+      <%= image_tag 'unknown.png', class: 'thumbnail' %>
+      <h2>Username</h2>
+      <p>some random text from the article title</p>
+      <span><div class="comments"></div>434</span><span><div class="ups"></div>4532</span>
+    </div>
+  </div>
+  <div class="col-xs-2" id="helpful-text">
+    <p>Drag the card on the left to the desired action</p>
+  </div>
+  <div class="col-xs-5">
+    <div class="actions" id="reddit" >
+      <%= image_tag 'reddit-logo.png' %>
+      <p>Open on Reddit</p>
+    </div>
+  <div class="actions" id="mail">
+    <%= image_tag 'mail-logo.png' %>
+    <p>Email to a Friend</p>
+  </div>
+</div>
+</div>
 <div class="container">
   <div class="col-xs-12 col-md-9 col-md-offset-1">
     <div id="loader" class="col-xs-12"></div>
