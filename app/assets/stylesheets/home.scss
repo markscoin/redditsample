@@ -26,6 +26,9 @@ body {
   .navbar-brand {
     color: #fff;
     font-size: 2.2em;
+    &:focus {
+      color: #fff;
+    }
   }
   .search  {
     &:-moz-placeholder, &:-ms-input-placeholder,&::-moz-placeholder  { /* Firefox 18-, Internet Explorer 10+ , Firefox 19+ */
@@ -39,5 +42,49 @@ body {
     width: 100px;
     border-radius: 20px;
     color: $secondary-color;
+  }
+}
+
+#articles {
+  list-style-type: none;
+  .username {
+    font-size: 1.6em;
+    color: $secondary-color;
+  }
+  .title {
+    font-size: 1.8em;
+  }
+  li {
+    clear: both;
+    border-bottom: 1px solid #dbdbeb;
+    min-height: 150px;
+    padding-top: 15px;
+  }
+  .thumbnail {
+    border: 2px solid lightgray;
+    border-radius: 50%;
+    object-fit: cover;
+    height: 90px;
+    width: 90px;
+    float: left;
+    margin-right: 10px;
+  }
+  span {
+    font-size: 1.2em;
+    margin-right: 15px;
+  }
+  .comments,.ups,.downs {
+    margin: 0 5px -3px 0;
+    background-image: url('icon-sprite.png');
+    background-repeat: no-repeat;
+    display: inline-block;
+    height: 16px;
+    width: 16px;
+  }
+  .ups {
+    background-position: 0 -16px;
+  }
+  .downs {
+    background-position: 0 -32px;
   }
 }

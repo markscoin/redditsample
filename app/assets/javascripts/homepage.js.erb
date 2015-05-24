@@ -1,0 +1,52 @@
+/**
+ * Created by Mark on 5/23/15.
+ */
+
+$(function() {
+  // header search bar animation
+  var search = $('.search');
+  search.focus(function() {
+    search.animate({width: "+=200"}, 500);
+  });
+  search.focusout(function() {
+    search.animate({width: "-=200"}, 500);
+  });
+  $(document).ready(function() {
+    articles('funny');
+  });
+
+  search.on('keyup',function() {
+    var lookup = $(this).val(),
+        list = $('#articles');
+      if (lookup.length > 2) {
+          list.empty();
+          articles(lookup)
+      }
+  });
+
+  //function to collect Reddit articles
+  function articles(request) {
+    $.ajax({
+        url: 'http://www.reddit.com/r/' + request + '/.json',
+        dataType: 'json',
+        success: function(results) {
+            var list = $('#articles');
+            results.data.children.forEach(function(i){
+                var title = i.data.title,
+                        author = i.data.author,
+                        thumbnail = i.data.thumbnail || '<%= asset_path('unknown.png') %>',
+                        num_comments = i.data.num_comments,
+                        ups = i.data.ups,
+                        sprite = '<%= asset_path('icon-sprite.png') %>',
+                        downs = i.data.downs;
+                list.append('<li>' + '<img src="'+thumbnail+'" class="thumbnail" />' + '<p class="username">' + author + "</p>" + '<p class="title">' + title + '</p>' + "<span>" + '<div  class="comments"></div>' + num_comments + ' comments'+ '</span> <span>'+ '<div class="ups"></div>' + ups + ' ups' + '</span> <span>' + '<div class="downs" ></div>' +downs + ' downs' + '</span>' + '</li>');
+            });
+        },
+        error: function(fail) {
+            console.log("didn't work:" + fail);
+        }
+    }); 
+  }
+});
+
+
