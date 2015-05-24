@@ -26,10 +26,13 @@ $(function() {
 
   //function to collect Reddit articles
   function articles(request) {
+    var loader = $('#loader');
+    loader.append('<img src="' + '<%= asset_path('loader.gif') %>"' +"/>"); 
     $.ajax({
         url: 'http://www.reddit.com/r/' + request + '/.json',
         dataType: 'json',
         success: function(results) {
+            loader.empty();
             var list = $('#articles');
             results.data.children.forEach(function(i){
                 var title = i.data.title,
@@ -44,6 +47,7 @@ $(function() {
         },
         error: function(fail) {
             console.log("didn't work:" + fail);
+            loader.empty();
         }
     }); 
   }

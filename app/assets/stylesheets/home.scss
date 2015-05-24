@@ -18,6 +18,7 @@ $secondary-color: #3dc4fd;
 body {
   font-family: evo, sans-serif, arial;
   font-size: 10px;
+  background-color: #f4f7fa;
 }
 
 .navbar-default {
@@ -59,6 +60,9 @@ body {
     border-bottom: 1px solid #dbdbeb;
     min-height: 150px;
     padding-top: 15px;
+    &:hover {
+      background-color: lighten(#f4f7fa, 5%);
+    }
   }
   .thumbnail {
     border: 2px solid lightgray;
@@ -67,7 +71,7 @@ body {
     height: 90px;
     width: 90px;
     float: left;
-    margin-right: 10px;
+    margin: 0 10px 40px 15px;
   }
   span {
     font-size: 1.2em;
@@ -87,4 +91,10 @@ body {
   .downs {
     background-position: 0 -32px;
   }
+}
+
+#loader > img{
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
 }
